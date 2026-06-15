@@ -9,7 +9,6 @@ import Events from './components/Events';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Memories from './components/Memories';
-import RSVP from './components/RSVP';
 import Venue from './components/Venue';
 
 import { useEventAutoExpand } from './hooks/useEventAutoExpand';
@@ -31,15 +30,20 @@ export default function App() {
         const rootElement = document.documentElement;
         const bodyElement = document.body;
 
-        // Lock both scrolling elements while the entry video is visible.
-        // Mobile browsers do not always use <body> as the scroll container.
+        // Prevent page scrolling while the entry video is visible.
         rootElement.classList.toggle('scroll-locked', !revealed);
         bodyElement.classList.toggle('scroll-locked', !revealed);
 
         if (revealed) {
-            // Always begin the invitation from the first section.
             window.requestAnimationFrame(() => {
+                // Mobile uses main-content as the scroll container.
                 document.getElementById('main-content')?.scrollTo({
+                    top: 0,
+                    behavior: 'auto',
+                });
+
+                // Desktop uses the browser window.
+                window.scrollTo({
                     top: 0,
                     behavior: 'auto',
                 });
@@ -61,16 +65,14 @@ export default function App() {
     const revealMain = () => {
         if (revealed) return;
 
-        // Remove the fixed entry layer immediately so it cannot capture
-        // touch/wheel events after the invitation becomes visible.
+        // Completely remove the entry video layer.
         setEntryClosed(true);
         setRevealed(true);
     };
 
-    const mainClass = useMemo(
-        () => `main-content ${revealed ? 'visible fade-in' : ''}`,
-        [revealed]
-    );
+    const mainClass = useMemo(() => {
+        return `main-content ${revealed ? 'visible fade-in' : ''}`;
+    }, [revealed]);
 
     return (
         <>
@@ -80,8 +82,16 @@ export default function App() {
                 className={petals.className}
             />
 
-            <audio ref={bgAudioRef} id="bg-audio" loop preload="metadata">
-                <source src={weddingData.assets.bgMusic} type="audio/mpeg" />
+            <audio
+                ref={bgAudioRef}
+                id="bg-audio"
+                loop
+                preload="metadata"
+            >
+                <source
+                    src={weddingData.assets.bgMusic}
+                    type="audio/mpeg"
+                />
             </audio>
 
             <AudioButton
@@ -99,13 +109,25 @@ export default function App() {
                 />
             )}
 
-            <main id="main-content" className={mainClass}>
+            <main
+                id="main-content"
+                className={mainClass}
+            >
                 <Hero data={weddingData} />
-                <Countdown enabled={revealed} data={weddingData} />
+
+                <Countdown
+                    enabled={revealed}
+                    data={weddingData}
+                />
+
                 <Memories data={weddingData} />
+
                 <Venue data={weddingData} />
+
                 <Events data={weddingData} />
+
                 {/* <RSVP data={weddingData} /> */}
+
                 <Footer data={weddingData} />
             </main>
         </>

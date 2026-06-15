@@ -7,31 +7,39 @@ export default function EntryGate({
     setAudioPlaying,
 }) {
     const [playing, setPlaying] = useState(false);
+
     const videoRef = useRef(null);
     const timerRef = useRef(null);
+    const startedRef = useRef(false);
 
     const openInvite = () => {
+        // Clear the 10-second fallback timer.
         if (timerRef.current) {
             clearTimeout(timerRef.current);
+            timerRef.current = null;
         }
 
-        const video = videoRef.current;
-        if (video) {
-            video.pause();
+        // Stop the entry video before opening the invitation.
+        if (videoRef.current) {
+            videoRef.current.pause();
         }
 
         onReveal();
     };
 
     const startInvite = async () => {
+        // Prevent multiple taps from restarting the video.
+        if (startedRef.current) return;
+
+        startedRef.current = true;
+        setPlaying(true);
+
         const video = videoRef.current;
 
         if (!video) {
             openInvite();
             return;
         }
-
-        setPlaying(true);
 
         try {
             video.muted = true;
@@ -40,19 +48,23 @@ export default function EntryGate({
 
             await video.play();
 
-            timerRef.current = setTimeout(() => {
+            // Open automatically after 10 seconds as a fallback.
+            timerRef.current = window.setTimeout(() => {
                 openInvite();
             }, 10000);
 
+            // Start the background wedding music.
             try {
-                await bgAudioRef.current?.play();
-                setAudioPlaying(true);
-            } catch (audioErr) {
-                console.warn('Audio blocked:', audioErr);
+                if (bgAudioRef.current) {
+                    await bgAudioRef.current.play();
+                    setAudioPlaying(true);
+                }
+            } catch (audioError) {
+                console.warn('Background audio was blocked:', audioError);
                 setAudioPlaying(false);
             }
-        } catch (err) {
-            console.warn('Entry video blocked:', err);
+        } catch (videoError) {
+            console.warn('Entry video could not play:', videoError);
             openInvite();
         }
     };
@@ -62,6 +74,8 @@ export default function EntryGate({
             if (timerRef.current) {
                 clearTimeout(timerRef.current);
             }
+
+            videoRef.current?.pause();
         };
     }, []);
 
@@ -72,7 +86,13 @@ export default function EntryGate({
             onClick={startInvite}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && startInvite()}
+            aria-label="Open wedding invitation"
+            onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    startInvite();
+                }
+            }}
         >
             <video
                 ref={videoRef}
@@ -83,17 +103,31 @@ export default function EntryGate({
                 onEnded={openInvite}
                 onError={openInvite}
             >
-                <source src={data.assets.entryVideo} type="video/mp4" />
+                <source
+                    src={data.assets.entryVideo}
+                    type="video/mp4"
+                />
             </video>
 
-            {!playing && <div className="tap-hint">Tap to Begin</div>}
+            {!playing && (
+                <button
+                    type="button"
+                    className="tap-hint"
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        startInvite();
+                    }}
+                >
+                    Tap to Begin
+                </button>
+            )}
 
             {playing && (
                 <button
                     type="button"
                     className="enter-invite-btn"
-                    onClick={(e) => {
-                        e.stopPropagation();
+                    onClick={(event) => {
+                        event.stopPropagation();
                         openInvite();
                     }}
                 >
