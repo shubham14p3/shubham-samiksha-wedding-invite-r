@@ -1813,3 +1813,73 @@ select.field-input {
         transition: none;
     }
 }
+
+/* =========================================================
+   Reliable page scrolling + mobile section snap navigation
+   ========================================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+html.scroll-locked,
+body.scroll-locked {
+  height: 100%;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+/* Desktop/tablet keep the normal document scroll. */
+#main-content.visible,
+.main-content.visible {
+  width: 100%;
+}
+
+/*
+ * On phones, <main> becomes the only vertical scroll container.
+ * Each direct child section naturally settles at the top after a swipe.
+ */
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+  #main-content.visible,
+  .main-content.visible {
+    height: 100vh;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    touch-action: pan-y;
+  }
+
+  #main-content > section,
+  .main-content > section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}
+
+/* Respect accessibility settings and avoid forced animation. */
+@media (prefers-reduced-motion: reduce) {
+  html,
+  #main-content.visible,
+  .main-content.visible {
+    scroll-behavior: auto;
+  }
+}

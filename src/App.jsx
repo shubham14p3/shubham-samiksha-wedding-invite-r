@@ -28,10 +28,27 @@ export default function App() {
     useEventAutoExpand(revealed);
 
     useEffect(() => {
-        document.body.style.overflow = revealed ? 'auto' : 'hidden';
+        const rootElement = document.documentElement;
+        const bodyElement = document.body;
+
+        // Lock both scrolling elements while the entry video is visible.
+        // Mobile browsers do not always use <body> as the scroll container.
+        rootElement.classList.toggle('scroll-locked', !revealed);
+        bodyElement.classList.toggle('scroll-locked', !revealed);
+
+        if (revealed) {
+            // Always begin the invitation from the first section.
+            window.requestAnimationFrame(() => {
+                document.getElementById('main-content')?.scrollTo({
+                    top: 0,
+                    behavior: 'auto',
+                });
+            });
+        }
 
         return () => {
-            document.body.style.overflow = 'auto';
+            rootElement.classList.remove('scroll-locked');
+            bodyElement.classList.remove('scroll-locked');
         };
     }, [revealed]);
 
@@ -44,11 +61,10 @@ export default function App() {
     const revealMain = () => {
         if (revealed) return;
 
+        // Remove the fixed entry layer immediately so it cannot capture
+        // touch/wheel events after the invitation becomes visible.
+        setEntryClosed(true);
         setRevealed(true);
-
-        window.setTimeout(() => {
-            setEntryClosed(true);
-        }, 900);
     };
 
     const mainClass = useMemo(
@@ -92,7 +108,6 @@ export default function App() {
                 {/* <RSVP data={weddingData} /> */}
                 <Footer data={weddingData} />
             </main>
-            hi
         </>
     );
 }
