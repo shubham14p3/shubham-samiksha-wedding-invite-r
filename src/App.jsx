@@ -89,9 +89,10 @@ export default function App() {
                 <Memories data={weddingData} />
                 <Venue data={weddingData} />
                 <Events data={weddingData} />
-                <RSVP data={weddingData} />
+                {/* <RSVP data={weddingData} /> */}
                 <Footer data={weddingData} />
             </main>
+            hi
         </>
     );
 }

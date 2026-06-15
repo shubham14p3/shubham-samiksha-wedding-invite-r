@@ -41,12 +41,13 @@ export const weddingData = {
             grandparents:
                 '(Grandson of Mr. Parasnath Prasad & Mrs. Radhika Devi)',
             residence:
-                'Subhash Chandra Path, Jyoti Nagar, Kharagajhar, Telco, Jamshedpur',
+                'Subhash Chandra Path, Jyoti Nagar, Kharangajhar, Telco, Jamshedpur',
         },
 
         bride: {
             name: 'Samiksha Soni',
-            parents: 'Daughter of Mr. Navlesh Chandra Verma & Mrs. Kanchan Verma',
+            parents:
+                'Daughter of Mr. Navlesh Chandra Verma & Mrs. Kanchan Verma',
             grandparents:
                 '(Granddaughter of Late Mr. Jageshwar Prasad Verma & Late Mrs. Lakhpati Devi)',
             residence: 'Padam Nagar, Milai-3, Chhattisgarh',
@@ -72,8 +73,11 @@ export const weddingData = {
         label: 'Wedding Muhurat',
         quote:
             'In Vikram Samvat 2083, Ashadha month Krishna Paksha, Tuesday — the sacred union will be solemnized.',
+
         displayDate: 'Tuesday · 07 July 2026',
+
         targetDate: '2026-07-07T19:30:00+05:30',
+
         completedText: 'Just Married ❤️',
     },
 
@@ -87,17 +91,33 @@ export const weddingData = {
 
     venue: {
         label: 'Wedding Venue',
+
         headingLine1: 'Join Us At',
+
         headingLine2: 'Son Mandap',
+
         name: 'Son Mandap',
-        addressLines: ['Sidhgora Campus', 'Jamshedpur'],
+
+        addressLines: [
+            'Sidhgora Campus',
+            'Jamshedpur, Jharkhand',
+        ],
+
+        // Keep empty when an embedded map is not required
         mapEmbedUrl: '',
-        directionsUrl: '',
+
+        // Opens Google Maps with Son Mandap as the destination
+        directionsUrl:
+            'https://www.google.com/maps/dir/?api=1&destination=Son%20Mandap%2C%20Sidhgora%2C%20Jamshedpur%2C%20Jharkhand',
+
+        video: `${A}ss.mp4`,
     },
 
     eventsSection: {
         label: 'Ceremony Details',
+
         headingLine1: 'Wedding',
+
         headingLine2: 'Celebrations',
     },
 
@@ -127,15 +147,20 @@ export const weddingData = {
 
     barat: {
         title: 'Barat Information',
+
         details:
             'The Barat will depart from our residence on 07 July 2026 at 5:00 PM towards Son Mandap, Sidhgora.',
     },
 
     rsvp: {
         apiUrl: 'https://wedding-backend-k67l.onrender.com/api/rsvp',
+
         label: 'Join the Celebration',
+
         headingLine1: 'Celebrate',
+
         headingLine2: 'With Us',
+
         intro:
             'We humbly request your gracious presence along with your family to bless the couple.',
 
@@ -164,6 +189,7 @@ export const weddingData = {
         coupleName: 'Shubham & Samiksha',
 
         hostsTitle: 'Hosts',
+
         hosts: [
             'Mr. Sanjay Kumar',
             'Mr. Santosh Kumar',
@@ -173,11 +199,28 @@ export const weddingData = {
 
         blessingsFrom: ['Mr. Parasnath Prasad'],
 
-        invitedBy: ['Jitendra Soni', 'Rajesh Soni', 'Vicky Soni'],
+        invitedBy: [
+            'Jitendra Soni',
+            'Rajesh Soni',
+            'Vicky Soni',
+        ],
 
-        specialThanks:
-            'With love from Sanjana Shree, Aman, Samridh, Rishu, Manas, Aniruddh, Muskan, Pihu, Ansh, Harsh, Rounak, Khilesh',
+        loveFrom: [
+            'Sanjana Shree',
+            'Aman',
+            'Samridh',
+            'Rishu',
+            'Manas',
+            'Aniruddh',
+            'Muskan',
+            'Pihu',
+            'Ansh',
+            'Harsh',
+            'Rounak',
+            'Khilesh',
+        ],
 
-        endNote: '07 July 2026 · Son Mandap, Sidhgora, Jamshedpur',
+        endNote:
+            '07 July 2026 · Son Mandap, Sidhgora, Jamshedpur',
     },
 };

@@ -2,30 +2,57 @@ import StarOrnament from './StarOrnament';
 import { safeArray } from '../utils/safeArray';
 
 export default function Venue({ data }) {
+    const venue = data?.venue || {};
+
+    // Fallback Google Maps URL in case directionsUrl is missing
+    const venueDirectionsUrl =
+        venue.directionsUrl ||
+        'https://www.google.com/maps/dir/?api=1&destination=Son%20Mandap%2C%20Sidhgora%2C%20Jamshedpur%2C%20Jharkhand';
+
     return (
         <section id="venue-section">
             <div className="text-center reveal">
-                <span className="section-label">{data.venue.label}</span>
+                <span className="section-label">
+                    {venue.label || 'Wedding Venue'}
+                </span>
+
                 <h2 className="section-heading text-terra">
-                    {data.venue.headingLine1}
+                    {venue.headingLine1 || 'Join Us At'}
                     <br />
-                    {data.venue.headingLine2}
+                    {venue.headingLine2 || venue.name}
                 </h2>
+
                 <StarOrnament className="mt-4 mb-8" />
             </div>
 
             <div className="venue-card reveal reveal-delay-2">
-                <img
-                    className="venue-img"
-                    src={data.assets.venueImage}
-                    alt={data.venue.name}
-                />
+                {venue.video ? (
+                    <video
+                        className="venue-video"
+                        src={venue.video}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        aria-label={`${venue.name || 'Wedding venue'} video`}
+                    />
+                ) : (
+                    <img
+                        className="venue-img"
+                        src={data?.assets?.venueImage}
+                        alt={venue.name || 'Wedding venue'}
+                        loading="lazy"
+                    />
+                )}
 
                 <div className="venue-info text-center">
-                    <h3 className="venue-name">{data.venue.name}</h3>
+                    <h3 className="venue-name">
+                        {venue.name || 'Son Mandap'}
+                    </h3>
 
                     <p className="venue-address">
-                        {safeArray(data.venue.addressLines).map((line) => (
+                        {safeArray(venue.addressLines).map((line) => (
                             <span key={line}>
                                 {line}
                                 <br />
@@ -33,27 +60,28 @@ export default function Venue({ data }) {
                         ))}
                     </p>
 
-                    {data.venue.mapEmbedUrl && (
+                    {venue.mapEmbedUrl && (
                         <iframe
                             className="venue-map"
-                            title={`${data.venue.name} map`}
-                            src={data.venue.mapEmbedUrl}
+                            title={`${venue.name || 'Wedding venue'} map`}
+                            src={venue.mapEmbedUrl}
                             allowFullScreen
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
                         />
                     )}
 
-                    {data.venue.directionsUrl && (
-                        <a
-                            className="directions-btn"
-                            href={data.venue.directionsUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Get Directions
-                        </a>
-                    )}
+                    <a
+                        className="directions-btn"
+                        href={venueDirectionsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Open directions to ${venue.name || 'Son Mandap'
+                            } in Google Maps`}
+                    >
+                        <span aria-hidden="true">📍</span>
+                        Open in Google Maps
+                    </a>
                 </div>
             </div>
         </section>
