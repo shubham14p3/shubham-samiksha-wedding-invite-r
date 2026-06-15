@@ -42,7 +42,7 @@ export default function EntryGate({
 
             timerRef.current = setTimeout(() => {
                 openInvite();
-            }, 8000);
+            }, 10000);
 
             try {
                 await bgAudioRef.current?.play();
