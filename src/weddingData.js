@@ -41,7 +41,7 @@ export const weddingData = {
             grandparents:
                 '(Grandson of Mr. Parasnath Prasad & Mrs. Radhika Devi)',
             residence:
-                'Subhash Chandra Path, Jyoti Nagar, Kharangajhar, Telco, Jamshedpur',
+                'Subhash Chandra Path, Jyoti Nagar, Kharangajhar, Telco, Jamshedpur, Jharkhand',
         },
 
         bride: {
@@ -50,7 +50,7 @@ export const weddingData = {
                 'Daughter of Mr. Navlesh Chandra Verma & Mrs. Kanchan Verma',
             grandparents:
                 '(Granddaughter of Late Mr. Jageshwar Prasad Verma & Late Mrs. Lakhpati Devi)',
-            residence: 'Padam Nagar, Milai-3, Chhattisgarh',
+            residence: 'Padum Nagar, Bhilai-3, Chhattisgarh',
         },
 
         guestNames: [
