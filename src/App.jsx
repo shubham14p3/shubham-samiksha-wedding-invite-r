@@ -1,4 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import { weddingData } from './weddingData';
 
@@ -26,33 +31,70 @@ export default function App() {
     useReveal(revealed);
     useEventAutoExpand(revealed);
 
+    // Lock the invitation behind the entry screen until it is opened.
     useEffect(() => {
         const rootElement = document.documentElement;
         const bodyElement = document.body;
 
-        // Prevent page scrolling while the entry video is visible.
         rootElement.classList.toggle('scroll-locked', !revealed);
         bodyElement.classList.toggle('scroll-locked', !revealed);
-
-        if (revealed) {
-            window.requestAnimationFrame(() => {
-                // Mobile uses main-content as the scroll container.
-                document.getElementById('main-content')?.scrollTo({
-                    top: 0,
-                    behavior: 'auto',
-                });
-
-                // Desktop uses the browser window.
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'auto',
-                });
-            });
-        }
 
         return () => {
             rootElement.classList.remove('scroll-locked');
             bodyElement.classList.remove('scroll-locked');
+        };
+    }, [revealed]);
+
+    // Reset both possible scroll containers before the opened invitation paints.
+    // Mobile scrolls <main>; desktop scrolls the browser window.
+    useLayoutEffect(() => {
+        if (!revealed) return undefined;
+
+        let firstFrameId;
+        let secondFrameId;
+
+        const resetToFirstHero = () => {
+            const mainContent = document.getElementById('main-content');
+
+            if (mainContent) {
+                const previousScrollBehavior = mainContent.style.scrollBehavior;
+
+                mainContent.style.scrollBehavior = 'auto';
+                mainContent.scrollTop = 0;
+                mainContent.scrollLeft = 0;
+                mainContent.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'auto',
+                });
+
+                mainContent.style.scrollBehavior = previousScrollBehavior;
+            }
+
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'auto',
+            });
+
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        };
+
+        // Run immediately and again after layout/snap positions are calculated.
+        resetToFirstHero();
+
+        firstFrameId = window.requestAnimationFrame(() => {
+            resetToFirstHero();
+
+            secondFrameId = window.requestAnimationFrame(() => {
+                resetToFirstHero();
+            });
+        });
+
+        return () => {
+            window.cancelAnimationFrame(firstFrameId);
+            window.cancelAnimationFrame(secondFrameId);
         };
     }, [revealed]);
 
@@ -65,14 +107,11 @@ export default function App() {
     const revealMain = () => {
         if (revealed) return;
 
-        // Completely remove the entry video layer.
         setEntryClosed(true);
         setRevealed(true);
     };
 
-    const mainClass = useMemo(() => {
-        return `main-content ${revealed ? 'visible fade-in' : ''}`;
-    }, [revealed]);
+    const mainClass = `main-content ${revealed ? 'visible fade-in' : ''}`;
 
     return (
         <>
@@ -119,12 +158,11 @@ export default function App() {
                     enabled={revealed}
                     data={weddingData}
                 />
+
                 <Events data={weddingData} />
                 <Memories data={weddingData} />
-
                 <Venue data={weddingData} />
                 {/* <RSVP data={weddingData} /> */}
-
                 <Footer data={weddingData} />
             </main>
         </>

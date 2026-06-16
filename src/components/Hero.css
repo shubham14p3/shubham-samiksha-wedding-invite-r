@@ -1,0 +1,571 @@
+/* =========================================================
+   HERO — THREE INDEPENDENT FULL-SCREEN SECTIONS
+   Hero.jsx returns three sibling <section> elements.
+   This works with the mobile snap container in styles.css.
+   ========================================================= */
+
+.hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    padding:
+        max(4.5rem, env(safe-area-inset-top))
+        clamp(1rem, 4vw, 2.5rem)
+        max(4.75rem, env(safe-area-inset-bottom));
+    background: var(--cream-2);
+}
+
+.hero-section-video {
+    position: absolute;
+    inset: 0;
+    z-index: -4;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.hero-section-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(255, 255, 255, 0.28),
+            transparent 48%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(253, 240, 232, 0.68),
+            rgba(255, 248, 243, 0.48) 46%,
+            rgba(253, 240, 232, 0.74)
+        );
+    pointer-events: none;
+}
+
+.hero-groom-section .hero-section-overlay {
+    background:
+        radial-gradient(
+            circle at 30% 40%,
+            rgba(255, 255, 255, 0.32),
+            transparent 46%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(253, 240, 232, 0.78),
+            rgba(245, 228, 192, 0.42),
+            rgba(255, 248, 243, 0.75)
+        );
+}
+
+.hero-bride-section .hero-section-overlay {
+    background:
+        radial-gradient(
+            circle at 70% 38%,
+            rgba(255, 255, 255, 0.34),
+            transparent 46%
+        ),
+        linear-gradient(
+            225deg,
+            rgba(253, 240, 232, 0.78),
+            rgba(212, 128, 106, 0.18),
+            rgba(255, 248, 243, 0.76)
+        );
+}
+
+.hero-section-frame {
+    position: absolute;
+    inset: clamp(0.85rem, 2vw, 1.5rem);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.hero-section-frame::before,
+.hero-section-frame::after,
+.hero-section-frame span::before,
+.hero-section-frame span::after {
+    content: "";
+    position: absolute;
+    width: clamp(42px, 7vw, 74px);
+    height: clamp(42px, 7vw, 74px);
+    border-color: rgba(201, 150, 62, 0.58);
+    border-style: solid;
+}
+
+.hero-section-frame::before {
+    top: 0;
+    left: 0;
+    border-width: 1px 0 0 1px;
+}
+
+.hero-section-frame::after {
+    top: 0;
+    right: 0;
+    border-width: 1px 1px 0 0;
+}
+
+.hero-section-frame span::before {
+    bottom: 0;
+    left: 0;
+    border-width: 0 0 1px 1px;
+}
+
+.hero-section-frame span::after {
+    right: 0;
+    bottom: 0;
+    border-width: 0 1px 1px 0;
+}
+
+.hero-section-content {
+    width: min(100%, 720px);
+    margin: 0 auto;
+}
+
+.hero-card {
+    position: relative;
+    width: 100%;
+    min-height: min(68vh, 680px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(2.25rem, 5vw, 4rem);
+    border: 1px solid rgba(201, 150, 62, 0.28);
+    border-radius: clamp(1.5rem, 3vw, 2.4rem);
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow:
+        0 24px 70px -18px rgba(92, 34, 51, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.72) inset;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    animation: heroCardEnter 1s ease-out both;
+}
+
+.hero-card-corners {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.hero-card-corner {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-color: rgba(201, 150, 62, 0.48);
+    border-style: solid;
+}
+
+.hero-card-corner.top-left {
+    top: 18px;
+    left: 18px;
+    border-width: 1px 0 0 1px;
+    border-radius: 5px 0 0 0;
+}
+
+.hero-card-corner.top-right {
+    top: 18px;
+    right: 18px;
+    border-width: 1px 1px 0 0;
+    border-radius: 0 5px 0 0;
+}
+
+.hero-card-corner.bottom-left {
+    bottom: 18px;
+    left: 18px;
+    border-width: 0 0 1px 1px;
+    border-radius: 0 0 0 5px;
+}
+
+.hero-card-corner.bottom-right {
+    right: 18px;
+    bottom: 18px;
+    border-width: 0 1px 1px 0;
+    border-radius: 0 0 5px 0;
+}
+
+.hero-section-number {
+    position: absolute;
+    top: 1.35rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(139, 62, 40, 0.52);
+    font-family: "Tenor Sans", sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+}
+
+.hero-ganesh-icon {
+    width: auto;
+    height: clamp(62px, 8vw, 82px);
+    margin: 0 auto 1rem;
+    object-fit: contain;
+    animation: heroFloat 4s ease-in-out infinite;
+}
+
+.hero-mantra {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    color: var(--terracotta);
+    font-family: "Tenor Sans", sans-serif;
+    font-size: clamp(0.58rem, 1.1vw, 0.72rem);
+    line-height: 1.65;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+}
+
+.hero-gold-divider,
+.hero-name-ornament {
+    width: min(100%, 230px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    margin: 1.4rem auto;
+    color: var(--gold);
+}
+
+.hero-gold-divider span,
+.hero-name-ornament span {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(201, 150, 62, 0.72),
+        transparent
+    );
+}
+
+.hero-gold-divider i {
+    font-style: normal;
+    font-size: 0.72rem;
+}
+
+.hero-intro-copy {
+    width: min(100%, 520px);
+}
+
+.hero-welcome-line,
+.hero-special-note,
+.hero-blessing {
+    color: var(--text-mid);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    font-style: italic;
+    line-height: 1.58;
+}
+
+.hero-special-note {
+    margin-top: 0.75rem;
+    color: var(--terra-dark);
+    font-weight: 600;
+}
+
+.hero-blessing {
+    margin-top: 0.75rem;
+}
+
+.hero-person-card {
+    min-height: min(64vh, 620px);
+}
+
+.hero-person-label {
+    margin-bottom: 0.8rem;
+    color: var(--gold);
+    font-family: "Tenor Sans", sans-serif;
+    font-size: clamp(0.62rem, 1vw, 0.74rem);
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+}
+
+.hero-person-name {
+    max-width: 100%;
+    margin: 0;
+    font-family: "Pinyon Script", "Great Vibes", cursive;
+    font-size: clamp(4.5rem, 10vw, 7rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: 0.01em;
+    overflow-wrap: anywhere;
+}
+
+.hero-name-ornament {
+    margin: 1.5rem auto;
+}
+
+.hero-name-ornament i {
+    color: var(--gold);
+    font-family: "Great Vibes", cursive;
+    font-size: 2rem;
+    font-style: normal;
+    line-height: 1;
+}
+
+.hero-family-details {
+    width: min(100%, 520px);
+}
+
+.hero-family-primary {
+    color: var(--text-dark);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.hero-family-secondary,
+.hero-family-residence {
+    margin-top: 0.45rem;
+    color: var(--text-light);
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.hero-family-residence {
+    color: var(--text-mid);
+}
+
+.hero-scroll-cue {
+    position: absolute;
+    bottom: max(1.1rem, env(safe-area-inset-bottom));
+    left: 50%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    transform: translateX(-50%);
+    color: var(--text-mid);
+    opacity: 0.76;
+    pointer-events: none;
+    animation: heroCueBounce 2s ease-in-out infinite;
+}
+
+.hero-scroll-cue span {
+    max-width: 180px;
+    font-family: "Tenor Sans", sans-serif;
+    font-size: 0.56rem;
+    letter-spacing: 0.22em;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.hero-scroll-cue svg {
+    width: 17px;
+    height: 17px;
+}
+
+@keyframes heroCardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes heroFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes heroCueBounce {
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(7px);
+    }
+}
+
+/* Desktop keeps every Hero part as its own full-screen scene. */
+@media (min-width: 769px) {
+    .hero-section:nth-of-type(even) .hero-section-content {
+        transform: translateX(-4vw);
+    }
+
+    .hero-section:nth-of-type(odd) .hero-section-content {
+        transform: translateX(4vw);
+    }
+
+    .hero-intro-section .hero-section-content {
+        transform: none;
+    }
+
+    .hero-person-card {
+        width: min(100%, 660px);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding:
+            max(3.6rem, env(safe-area-inset-top))
+            0.9rem
+            max(4.35rem, env(safe-area-inset-bottom));
+    }
+
+    .hero-section-frame {
+        inset: 0.75rem;
+    }
+
+    .hero-card {
+        min-height: min(72vh, 620px);
+        padding: 2.3rem 1.15rem;
+        border-radius: 1.55rem;
+    }
+
+    .hero-intro-card {
+        min-height: min(76vh, 660px);
+    }
+
+    .hero-person-card {
+        min-height: min(64vh, 540px);
+    }
+
+    .hero-section-number {
+        top: 1.15rem;
+    }
+
+    .hero-ganesh-icon {
+        height: 58px;
+    }
+
+    .hero-mantra {
+        font-size: 0.56rem;
+        letter-spacing: 0.19em;
+    }
+
+    .hero-gold-divider {
+        margin: 1.05rem auto;
+    }
+
+    .hero-welcome-line,
+    .hero-special-note,
+    .hero-blessing {
+        font-size: 1rem;
+        line-height: 1.48;
+    }
+
+    .hero-person-name {
+        font-size: clamp(4.2rem, 20vw, 6rem);
+    }
+
+    .hero-family-primary {
+        font-size: 1rem;
+    }
+
+    .hero-family-secondary,
+    .hero-family-residence {
+        font-size: 0.88rem;
+    }
+
+    .hero-card-corner {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 380px), (max-height: 690px) {
+    .hero-section {
+        padding-top: 3rem;
+        padding-bottom: 3.8rem;
+    }
+
+    .hero-card {
+        min-height: auto;
+        padding: 2.15rem 0.9rem 1.8rem;
+    }
+
+    .hero-ganesh-icon {
+        height: 48px;
+        margin-bottom: 0.65rem;
+    }
+
+    .hero-mantra {
+        font-size: 0.5rem;
+        line-height: 1.55;
+        letter-spacing: 0.14em;
+    }
+
+    .hero-gold-divider,
+    .hero-name-ornament {
+        margin: 0.8rem auto;
+    }
+
+    .hero-welcome-line,
+    .hero-special-note,
+    .hero-blessing {
+        font-size: 0.92rem;
+        line-height: 1.4;
+    }
+
+    .hero-person-name {
+        font-size: clamp(3.8rem, 18vw, 5rem);
+    }
+
+    .hero-scroll-cue span {
+        font-size: 0.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-card,
+    .hero-ganesh-icon,
+    .hero-scroll-cue {
+        animation: none;
+    }
+}
+@media (max-width: 768px) {
+    .hero-section {
+        box-sizing: border-box;
+        min-height: 100vh;
+        min-height: 100svh;
+        height: 100dvh;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        padding:
+            max(0.75rem, env(safe-area-inset-top))
+            0.55rem
+            max(3.15rem, env(safe-area-inset-bottom));
+    }
+
+    .hero-section-content {
+        width: 100%;
+        min-height: 0;
+        display: flex;
+        flex: 1;
+    }
+
+    .hero-card {
+        width: 100%;
+        min-height: 0;
+        height: auto;
+        flex: 1;
+        justify-content: center;
+        padding: 2.6rem 1.15rem 1.45rem;
+        border-radius: 1.35rem;
+    }
+}
