@@ -119,13 +119,10 @@ export default function App() {
                     enabled={revealed}
                     data={weddingData}
                 />
-
+                <Events data={weddingData} />
                 <Memories data={weddingData} />
 
                 <Venue data={weddingData} />
-
-                <Events data={weddingData} />
-
                 {/* <RSVP data={weddingData} /> */}
 
                 <Footer data={weddingData} />

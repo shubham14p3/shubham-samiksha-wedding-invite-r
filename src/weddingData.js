@@ -89,29 +89,7 @@ export const weddingData = {
             'Marriage is the sacred union where two hearts become one. It is the confluence of two families and the beginning of a new life.',
     },
 
-    venue: {
-        label: 'Wedding Venue',
-
-        headingLine1: 'Join Us At',
-
-        headingLine2: 'Son Mandap',
-
-        name: 'Son Mandap',
-
-        addressLines: [
-            'Sidhgora Campus',
-            'Jamshedpur, Jharkhand',
-        ],
-
-        // Keep empty when an embedded map is not required
-        mapEmbedUrl: '',
-
-        // Opens Google Maps with Son Mandap as the destination
-        directionsUrl:
-            'https://www.google.com/maps/dir/?api=1&destination=Son%20Mandap%2C%20Sidhgora%2C%20Jamshedpur%2C%20Jharkhand',
-
-        video: `${A}ss.mp4`,
-    },
+    
 
     eventsSection: {
         label: 'Ceremony Details',
@@ -150,6 +128,30 @@ export const weddingData = {
 
         details:
             'The Barat will depart from our residence on 07 July 2026 at 5:00 PM towards Son Mandap, Sidhgora.',
+    },
+
+    venue: {
+        label: 'Wedding Venue',
+
+        headingLine1: 'Join Us At',
+
+        headingLine2: 'Son Mandap',
+
+        name: 'Son Mandap',
+
+        addressLines: [
+            'Sidhgora Campus',
+            'Jamshedpur, Jharkhand',
+        ],
+
+        // Keep empty when an embedded map is not required
+        mapEmbedUrl: '',
+
+        // Opens Google Maps with Son Mandap as the destination
+        directionsUrl:
+            'https://www.google.com/maps/dir/?api=1&destination=Son%20Mandap%2C%20Sidhgora%2C%20Jamshedpur%2C%20Jharkhand',
+
+        video: `${A}ss.mp4`,
     },
 
     rsvp: {
