@@ -46,11 +46,13 @@ export default function Events({ data }) {
                     )}
                 </div>
             ))}
-
             {data.barat?.title && (
-                <div className="countdown-card reveal">
+                <div className="countdown-card barat-info-card reveal">
                     <span className="section-label">{data.barat.title}</span>
-                    <p className="countdown-quote">{data.barat.details}</p>
+
+                    <p className="countdown-quote barat-info-text">
+                        {data.barat.details}
+                    </p>
                 </div>
             )}
         </section>
