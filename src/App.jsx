@@ -22,7 +22,8 @@ import { usePetals } from './hooks/usePetals';
 import { useReveal } from './hooks/useReveal';
 
 const ENTRY_GATE_MIN_DURATION = 10000; // 10 seconds for EntryGate
-const AUTO_SECTION_DELAY = 6000; // 6 seconds for main sections
+const AUTO_SECTION_DELAY = 6000; // 6 seconds for normal sections
+const INVITATION_CAROUSEL_DELAY = 30000; // 30 seconds for invitation card carousel
 const MANUAL_PAUSE_DELAY = 9000;
 
 export default function App() {
@@ -97,7 +98,6 @@ export default function App() {
             document.body.scrollTop = 0;
         };
 
-        // Run immediately and again after layout/snap positions are calculated.
         resetToFirstHero();
 
         firstFrameId = window.requestAnimationFrame(() => {
@@ -115,9 +115,8 @@ export default function App() {
     }, [revealed]);
 
     // Auto transition between main invitation sections.
-    // This starts ONLY after revealed becomes true.
-    // Since revealed becomes true after EntryGate 10 sec delay,
-    // main sections will transition every 6 sec only after EntryGate is completed.
+    // Normal sections wait 6 seconds.
+    // Invitation carousel waits 30 seconds.
     useEffect(() => {
         if (!revealed) return undefined;
 
@@ -186,6 +185,16 @@ export default function App() {
             return closestIndex;
         };
 
+        const getSectionDelay = (section) => {
+            const customDelay = Number(section?.dataset?.autoDelay);
+
+            if (Number.isFinite(customDelay) && customDelay > 0) {
+                return customDelay;
+            }
+
+            return AUTO_SECTION_DELAY;
+        };
+
         const scrollToSection = (section) => {
             const scrollContainer = getScrollContainer();
             const sectionTop = getSectionTop(section);
@@ -214,7 +223,7 @@ export default function App() {
         const moveToNextSection = () => {
             const sections = getInvitationSections();
 
-            if (sections.length <= 1) return;
+            if (sections.length <= 1) return null;
 
             const currentSectionIndex = getCurrentSectionIndex(sections);
 
@@ -223,32 +232,49 @@ export default function App() {
                     ? 0
                     : currentSectionIndex + 1;
 
-            scrollToSection(sections[nextSectionIndex]);
+            const nextSection = sections[nextSectionIndex];
+
+            scrollToSection(nextSection);
+
+            return nextSection;
         };
 
-        const startAutoSectionTransition = () => {
-            window.clearInterval(autoSectionTimerId);
+        const scheduleNextSectionTransition = (currentSectionFromLastMove = null) => {
+            window.clearTimeout(autoSectionTimerId);
 
-            autoSectionTimerId = window.setInterval(() => {
-                moveToNextSection();
-            }, AUTO_SECTION_DELAY);
+            const sections = getInvitationSections();
+
+            if (sections.length <= 1) return;
+
+            const currentSection =
+                currentSectionFromLastMove ||
+                sections[getCurrentSectionIndex(sections)];
+
+            const delay = getSectionDelay(currentSection);
+
+            autoSectionTimerId = window.setTimeout(() => {
+                const nextSection = moveToNextSection();
+
+                // Schedule next movement based on the section we just moved to.
+                scheduleNextSectionTransition(nextSection);
+            }, delay);
         };
 
         const pauseAutoTransitionForManualInteraction = () => {
             // Ignore scroll/touch events caused by our own auto-scroll.
             if (autoScrollState.isAutoScrolling) return;
 
-            window.clearInterval(autoSectionTimerId);
+            window.clearTimeout(autoSectionTimerId);
             window.clearTimeout(manualPauseTimerId);
 
             // After manual interaction, wait 9 seconds, then continue again.
             manualPauseTimerId = window.setTimeout(() => {
-                startAutoSectionTransition();
+                scheduleNextSectionTransition();
             }, MANUAL_PAUSE_DELAY);
         };
 
-        // Start 6-second auto transition only after main invite opens.
-        startAutoSectionTransition();
+        // Start auto transition only after main invite opens.
+        scheduleNextSectionTransition();
 
         const manualEvents = [
             'wheel',
@@ -266,7 +292,7 @@ export default function App() {
         });
 
         return () => {
-            window.clearInterval(autoSectionTimerId);
+            window.clearTimeout(autoSectionTimerId);
             window.clearTimeout(manualPauseTimerId);
             window.clearTimeout(autoScrollUnlockTimerId);
 
@@ -349,7 +375,19 @@ export default function App() {
                 <Events data={weddingData} />
                 <Memories data={weddingData} />
                 <Venue data={weddingData} />
-                <InvitationCarousel enabled={revealed} />
+
+                {/* 
+                    This section waits 30 seconds before moving next.
+                    Reason: InvitationCarousel has 4 cards/images.
+                    6 sec x 4 = 24 sec, so 30 sec gives safe reading time.
+                */}
+                <section
+                    id="invitation-carousel-auto-section"
+                    data-auto-delay={INVITATION_CAROUSEL_DELAY}
+                >
+                    <InvitationCarousel enabled={revealed} />
+                </section>
+
                 {/* <RSVP data={weddingData} /> */}
                 <Footer data={weddingData} />
             </main>
