@@ -1,0 +1,229 @@
+/* =========================================================
+   INVITATION CARD CAROUSEL
+   Kept separate so existing wedding invite CSS does not break.
+   ========================================================= */
+
+#invitation-card-section {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(3rem, 5vw, 5rem) 1.25rem;
+    background:
+        radial-gradient(
+            circle at 50% 18%,
+            rgba(232, 192, 122, 0.28),
+            transparent 34%
+        ),
+        var(--cream-2);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+#invitation-card-section::before,
+#invitation-card-section::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 999px;
+    background: rgba(184, 89, 64, 0.08);
+    filter: blur(2px);
+    z-index: -1;
+}
+
+#invitation-card-section::before {
+    top: -80px;
+    left: -80px;
+}
+
+#invitation-card-section::after {
+    right: -90px;
+    bottom: -90px;
+}
+
+.invite-carousel-shell {
+    width: min(100%, 820px);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.invite-carousel-subtitle {
+    max-width: 460px;
+    margin: 0.75rem auto 1.6rem;
+    color: var(--text-light);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    font-style: italic;
+    line-height: 1.55;
+}
+
+.invite-carousel-frame {
+    width: min(100%, 720px);
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid rgba(201, 150, 62, 0.32);
+    border-radius: clamp(1.25rem, 3vw, 2rem);
+    background: rgba(255, 255, 255, 0.78);
+    padding: clamp(0.55rem, 1.5vw, 1rem);
+    box-shadow: var(--shadow-warm);
+    touch-action: pan-y;
+}
+
+.invite-carousel-track {
+    display: flex;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.invite-carousel-slide {
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.invite-carousel-slide img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: min(72vh, 880px);
+    object-fit: contain;
+    border-radius: clamp(0.85rem, 2vw, 1.35rem);
+    background: var(--white);
+    box-shadow: 0 16px 45px rgba(92, 34, 51, 0.16);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.invite-carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.invite-carousel-btn {
+    border: 1px solid rgba(201, 150, 62, 0.45);
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: var(--white);
+    padding: 0.78rem 1.25rem;
+    font-family: "Tenor Sans", sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(184, 89, 64, 0.28);
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.invite-carousel-btn:hover {
+    background: var(--terra-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(184, 89, 64, 0.36);
+}
+
+.invite-carousel-counter {
+    min-width: 58px;
+    color: var(--terra-dark);
+    font-family: "Tenor Sans", sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+}
+
+.invite-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-top: 1rem;
+}
+
+.invite-carousel-dot {
+    width: 9px;
+    height: 9px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(139, 62, 40, 0.28);
+    cursor: pointer;
+    transition:
+        width 0.25s ease,
+        background 0.25s ease;
+}
+
+.invite-carousel-dot.active {
+    width: 28px;
+    background: var(--terracotta);
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    #invitation-card-section {
+        padding:
+            max(1rem, env(safe-area-inset-top))
+            0.75rem
+            max(1rem, env(safe-area-inset-bottom));
+    }
+
+    .invite-carousel-shell {
+        width: 100%;
+    }
+
+    .invite-carousel-subtitle {
+        margin-bottom: 0.95rem;
+        font-size: 0.95rem;
+    }
+
+    .invite-carousel-frame {
+        width: min(100%, 430px);
+        padding: 0.45rem;
+        border-radius: 1.15rem;
+    }
+
+    .invite-carousel-slide img {
+        max-height: calc(100dvh - 245px);
+        border-radius: 0.85rem;
+    }
+
+    .invite-carousel-controls {
+        gap: 0.7rem;
+        margin-top: 0.9rem;
+    }
+
+    .invite-carousel-btn {
+        padding: 0.7rem 0.95rem;
+        font-size: 0.56rem;
+        letter-spacing: 0.16em;
+    }
+
+    .invite-carousel-counter {
+        min-width: 52px;
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 380px) and (orientation: portrait) {
+    .invite-carousel-subtitle {
+        display: none;
+    }
+
+    .invite-carousel-slide img {
+        max-height: calc(100dvh - 210px);
+    }
+
+    .invite-carousel-controls {
+        margin-top: 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .invite-carousel-track,
+    .invite-carousel-btn,
+    .invite-carousel-dot {
+        transition: none;
+    }
+}

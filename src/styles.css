@@ -1137,8 +1137,9 @@ select.field-input {
 }
 
 .footer-family-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  place-items: center;
+  flex-wrap: wrap;
   gap: 10px 14px;
   margin-top: 12px;
 }
@@ -1854,4 +1855,198 @@ body.scroll-locked {
             transform: translateX(-50%);
         }
     }
+}
+/* =========================================================
+   COUNTDOWN — CENTER CARD IN FULL SCREEN
+   ========================================================= */
+
+#countdown-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: grid;
+  place-items: center;
+
+  padding: clamp(1.5rem, 5vw, 5rem) 1.25rem;
+  background: var(--cream);
+}
+
+.countdown-card {
+  width: min(100%, 440px);
+  margin: 0;
+
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  padding: 3rem 2rem;
+
+  text-align: center;
+
+  box-shadow: var(--shadow-warm);
+}
+
+.countdown-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.countdown-unit {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.countdown-number {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.countdown-label {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  #countdown-section {
+    padding:
+      max(1rem, env(safe-area-inset-top))
+      0.75rem
+      max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .countdown-card {
+    width: min(100%, 390px);
+    padding: 2.5rem 1rem;
+    border-radius: 1.6rem;
+  }
+
+  .countdown-grid {
+    gap: 0.15rem;
+  }
+
+  .countdown-number {
+    font-size: clamp(2.4rem, 12vw, 3.2rem);
+  }
+
+  .countdown-label {
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+  }
+}
+/* =========================================================
+   COUNTDOWN — CENTER CARD IN FULL SCREEN
+   ========================================================= */
+
+#countdown-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: grid;
+  place-items: center;
+
+  padding: clamp(1.5rem, 5vw, 5rem) 1.25rem;
+  background: var(--cream);
+}
+
+.countdown-card {
+  width: min(100%, 440px);
+  margin: 0;
+
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  padding: 3rem 2rem;
+
+  text-align: center;
+
+  box-shadow: var(--shadow-warm);
+}
+
+.countdown-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.countdown-unit {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.countdown-number {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.countdown-label {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  #countdown-section {
+    padding:
+      max(1rem, env(safe-area-inset-top))
+      0.75rem
+      max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .countdown-card {
+    width: min(100%, 390px);
+    padding: 2.5rem 1rem;
+    border-radius: 1.6rem;
+  }
+
+  .countdown-grid {
+    gap: 0.15rem;
+  }
+
+  .countdown-number {
+    font-size: clamp(2.4rem, 12vw, 3.2rem);
+  }
+
+  .countdown-label {
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+  }
+}
+@media (max-width: 360px) {
+  #countdown-section .countdown-card {
+    padding-inline: 0.65rem;
+  }
+
+  #countdown-section .countdown-number {
+    font-size: clamp(2.5rem, 12vw, 3.2rem);
+  }
+
+  #countdown-section .countdown-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+  }
+
+  #countdown-section .countdown-quote {
+    font-size: 1.25rem;
+  }
 }
