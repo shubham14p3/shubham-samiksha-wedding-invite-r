@@ -311,27 +311,47 @@
 }
 
 .hero-family-details {
-    width: min(100%, 520px);
+    width: min(100%, 560px);
+    margin-top: 0.35rem;
+}
+
+.hero-family-line-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.38rem;
+}
+
+.hero-family-ampersand {
+    color: var(--gold);
+    font-family: "Great Vibes", cursive;
+    font-size: 1.65rem;
+    line-height: 1;
 }
 
 .hero-family-primary {
+    margin-top: 0.35rem;
     color: var(--text-dark);
-    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-size: clamp(1.02rem, 1.8vw, 1.22rem);
     font-weight: 600;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
-.hero-family-secondary,
-.hero-family-residence {
-    margin-top: 0.45rem;
+.hero-family-secondary {
+    margin-top: 1rem;
     color: var(--text-light);
-    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    font-size: clamp(0.92rem, 1.45vw, 1.05rem);
     font-style: italic;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 .hero-family-residence {
+    max-width: 500px;
+    margin: 1.15rem auto 0;
     color: var(--text-mid);
+    font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+    font-style: italic;
+    line-height: 1.65;
 }
 
 .hero-scroll-cue {
@@ -399,22 +419,14 @@
     }
 }
 
-/* Desktop keeps every Hero part as its own full-screen scene. */
+/* Desktop keeps every Hero part centered. */
 @media (min-width: 769px) {
-    .hero-section:nth-of-type(even) .hero-section-content {
-        transform: translateX(-4vw);
-    }
-
-    .hero-section:nth-of-type(odd) .hero-section-content {
-        transform: translateX(4vw);
-    }
-
-    .hero-intro-section .hero-section-content {
+    .hero-section .hero-section-content {
         transform: none;
     }
 
     .hero-person-card {
-        width: min(100%, 660px);
+        width: min(100%, 680px);
     }
 }
 
@@ -530,13 +542,6 @@
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .hero-card,
-    .hero-ganesh-icon,
-    .hero-scroll-cue {
-        animation: none;
-    }
-}
 @media (max-width: 768px) {
     .hero-section {
         box-sizing: border-box;
@@ -567,5 +572,13 @@
         justify-content: center;
         padding: 2.6rem 1.15rem 1.45rem;
         border-radius: 1.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-card,
+    .hero-ganesh-icon,
+    .hero-scroll-cue {
+        animation: none;
     }
 }

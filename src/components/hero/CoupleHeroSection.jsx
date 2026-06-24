@@ -2,6 +2,30 @@ import CardCorners from './CardCorners';
 import HeroBackdrop from './HeroBackdrop';
 import ScrollCue from './ScrollCue';
 
+const splitFamilyLine = (text) => {
+    if (!text || !text.includes('&')) {
+        return text ? [text] : [];
+    }
+
+    const cleanText = text.trim();
+    const hasOpeningBracket = cleanText.startsWith('(');
+    const hasClosingBracket = cleanText.endsWith(')');
+
+    const textWithoutBrackets = cleanText
+        .replace(/^\(/, '')
+        .replace(/\)$/, '');
+
+    const [firstPerson, secondPerson] = textWithoutBrackets
+        .split('&')
+        .map((item) => item.trim());
+
+    return [
+        hasOpeningBracket ? `(${firstPerson}` : firstPerson,
+        '&',
+        hasClosingBracket ? `${secondPerson})` : secondPerson,
+    ];
+};
+
 export default function CoupleHeroSection({
     id,
     sectionNumber,
@@ -12,6 +36,9 @@ export default function CoupleHeroSection({
     variant,
 }) {
     if (!person) return null;
+
+    const parentLines = splitFamilyLine(person.parents);
+    const grandParentLines = splitFamilyLine(person.grandparents);
 
     return (
         <section
@@ -42,15 +69,37 @@ export default function CoupleHeroSection({
                     </div>
 
                     <div className="hero-family-details">
-                        {person.parents && (
-                            <p className="hero-family-primary">
-                                {person.parents}
+                        {parentLines.length > 0 && (
+                            <p className="hero-family-primary hero-family-line-group">
+                                {parentLines.map((line, index) => (
+                                    <span
+                                        key={`${line}-${index}`}
+                                        className={
+                                            line === '&'
+                                                ? 'hero-family-ampersand'
+                                                : ''
+                                        }
+                                    >
+                                        {line}
+                                    </span>
+                                ))}
                             </p>
                         )}
 
-                        {person.grandparents && (
-                            <p className="hero-family-secondary">
-                                {person.grandparents}
+                        {grandParentLines.length > 0 && (
+                            <p className="hero-family-secondary hero-family-line-group">
+                                {grandParentLines.map((line, index) => (
+                                    <span
+                                        key={`${line}-${index}`}
+                                        className={
+                                            line === '&'
+                                                ? 'hero-family-ampersand'
+                                                : ''
+                                        }
+                                    >
+                                        {line}
+                                    </span>
+                                ))}
                             </p>
                         )}
 
