@@ -21,12 +21,19 @@ import { useEventAutoExpand } from './hooks/useEventAutoExpand';
 import { usePetals } from './hooks/usePetals';
 import { useReveal } from './hooks/useReveal';
 
+const ENTRY_GATE_MIN_DURATION = 10000; // 10 seconds for EntryGate
+const AUTO_SECTION_DELAY = 6000; // 6 seconds for main sections
+const MANUAL_PAUSE_DELAY = 9000;
+
 export default function App() {
     const [revealed, setRevealed] = useState(false);
     const [entryClosed, setEntryClosed] = useState(false);
+    const [entryRevealStarted, setEntryRevealStarted] = useState(false);
     const [audioPlaying, setAudioPlaying] = useState(false);
 
     const bgAudioRef = useRef(null);
+    const entryRevealTimerRef = useRef(null);
+
     const petals = usePetals(revealed);
 
     useReveal(revealed);
@@ -46,6 +53,13 @@ export default function App() {
         };
     }, [revealed]);
 
+    // Cleanup EntryGate timer if component unmounts.
+    useEffect(() => {
+        return () => {
+            window.clearTimeout(entryRevealTimerRef.current);
+        };
+    }, []);
+
     // Reset both possible scroll containers before the opened invitation paints.
     // Mobile scrolls <main>; desktop scrolls the browser window.
     useLayoutEffect(() => {
@@ -63,6 +77,7 @@ export default function App() {
                 mainContent.style.scrollBehavior = 'auto';
                 mainContent.scrollTop = 0;
                 mainContent.scrollLeft = 0;
+
                 mainContent.scrollTo({
                     top: 0,
                     left: 0,
@@ -100,14 +115,14 @@ export default function App() {
     }, [revealed]);
 
     // Auto transition between main invitation sections.
+    // This starts ONLY after revealed becomes true.
+    // Since revealed becomes true after EntryGate 10 sec delay,
+    // main sections will transition every 6 sec only after EntryGate is completed.
     useEffect(() => {
         if (!revealed) return undefined;
 
         const mainContent = document.getElementById('main-content');
         if (!mainContent) return undefined;
-
-        const AUTO_SECTION_DELAY = 6000;
-        const MANUAL_PAUSE_DELAY = 9000;
 
         let autoSectionTimerId = null;
         let manualPauseTimerId = null;
@@ -220,7 +235,7 @@ export default function App() {
         };
 
         const pauseAutoTransitionForManualInteraction = () => {
-            // Ignore the scroll/touch events caused by our own auto-scroll.
+            // Ignore scroll/touch events caused by our own auto-scroll.
             if (autoScrollState.isAutoScrolling) return;
 
             window.clearInterval(autoSectionTimerId);
@@ -232,7 +247,7 @@ export default function App() {
             }, MANUAL_PAUSE_DELAY);
         };
 
-        // Start after main invite opens.
+        // Start 6-second auto transition only after main invite opens.
         startAutoSectionTransition();
 
         const manualEvents = [
@@ -271,10 +286,16 @@ export default function App() {
     }, []);
 
     const revealMain = () => {
-        if (revealed) return;
+        // Prevent multiple taps/clicks from starting multiple timers.
+        if (revealed || entryRevealStarted) return;
 
-        setEntryClosed(true);
-        setRevealed(true);
+        setEntryRevealStarted(true);
+
+        // EntryGate stays visible for minimum 10 seconds after Tap to Begin.
+        entryRevealTimerRef.current = window.setTimeout(() => {
+            setEntryClosed(true);
+            setRevealed(true);
+        }, ENTRY_GATE_MIN_DURATION);
     };
 
     const mainClass = `main-content ${revealed ? 'visible fade-in' : ''}`;
